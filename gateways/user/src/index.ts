@@ -1,0 +1,1 @@
+console.log('Message temporaire de la gateway "user.gateway.riptest" à supprimer.');

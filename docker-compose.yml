@@ -1,0 +1,57 @@
+version: '3.8'
+
+x-common-node-variables: &common-node-variables
+  NODE_ENV: development
+
+services:
+  # -------------------------------------------------------------------------
+  postgres.db.riptest:
+    container_name: postgres.db.riptest
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: riptest
+    volumes:
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # ports:
+    #   - 5432:5432
+  # -------------------------------------------------------------------------
+  user.service.riptest:
+    container_name: user.service.riptest
+    build:
+      context: ./services/user
+      dockerfile: development.Dockerfile
+    volumes:
+      - ./services/user/src:/usr/src/app/src
+    environment:
+      <<: *common-node-variables
+    depends_on:
+      - postgres.db.riptest
+    # ports:
+    #   - 8081:80
+  # -------------------------------------------------------------------------
+  security.service.riptest:
+    container_name: security.service.riptest
+    build:
+      context: ./services/security
+      dockerfile: development.Dockerfile
+    volumes:
+      - ./services/security/src:/usr/src/app/src
+    environment:
+      <<: *common-node-variables
+    # ports:
+    #   - 8082:80
+  # -------------------------------------------------------------------------
+  user.gateway.riptest:
+    container_name: user.gateway.riptest
+    build:
+      context: ./gateways/user
+      dockerfile: development.Dockerfile
+    volumes:
+      - ./gateways/user/src:/usr/src/app/src
+    environment:
+      <<: *common-node-variables
+    ports:
+      - 8080:80
+  # -------------------------------------------------------------------------
