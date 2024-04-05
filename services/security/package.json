@@ -7,7 +7,11 @@
     "build": "tsc",
     "start-build-watch": "ts-node-dev --poll ./src/index.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.1",
+    "pg": "^8.7.1"
+  },
   "devDependencies": {
     "@types/node": "18.x",
     "ts-node-dev": "^1.1.8",
