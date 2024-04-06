@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
-import { pool } from './db';
+import { pool } from '../../../shared/src/db';
 
 const app = express();
 const port = 3001;
@@ -9,7 +9,7 @@ const port = 3001;
 app.use(bodyParser.json());
 
 app.post('/create-token', async (req, res) => {
-  const { userId } = req.body;
+  const { userId }: { userId: string } = req.body;
   const token = uuidv4();
   
   try {
@@ -25,7 +25,7 @@ app.post('/create-token', async (req, res) => {
 });
 
 app.post('/authenticate-token', async (req, res) => {
-  const { token } = req.body;
+  const { token }: { token: string } = req.body;
   
   try {
     const client = await pool.connect();
