@@ -45,7 +45,7 @@ app.post('/login', validateBody<LoginData>(loginSchema), async (req: Request, re
     });
     
     if (response.status === 200 && response.data.userId) {
-      const securityResponse = await axios.post(`${securityServiceUrl}/token`, {
+      const securityResponse = await axios.post(`${securityServiceUrl}/create-token`, {
         userId: response.data.userId
       });
       const { token } = securityResponse.data;
@@ -54,9 +54,13 @@ app.post('/login', validateBody<LoginData>(loginSchema), async (req: Request, re
     } else {
       res.status(401).json({ message: 'Unauthorized' });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      res.status(401).json({ message: 'Unauthorized' });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   }
 });
 
@@ -70,7 +74,7 @@ app.get('/me', async (req: Request, res: Response) => {
     
     const securityResponse = await axios.post(`${securityServiceUrl}/authenticate-token`, { token });
     
-    if (!securityResponse.data.valid) {
+    if (!securityResponse.data.userId) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     
