@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
-import { pool } from '../../../shared/src/db';
+import { pool } from './db';
 
 const app = express();
 const port = 3001;

@@ -24,14 +24,13 @@ services:
       dockerfile: development.Dockerfile
     volumes:
       - ./services/user/src:/usr/src/app/src
-      - ./shared:/app/shared
     environment:
       <<: *common-node-variables
       POSTGRES_USER: postgres
-			POSTGRES_HOST: postgres.db.riptest
-			POSTGRES_DB: riptest
-			POSTGRES_PASSWORD: postgres
-			POSTGRES_PORT: '5432'
+      POSTGRES_HOST: postgres.db.riptest
+      POSTGRES_DB: riptest
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: '5432'
     depends_on:
       - postgres.db.riptest
     # ports:
@@ -44,14 +43,13 @@ services:
       dockerfile: development.Dockerfile
     volumes:
       - ./services/security/src:/usr/src/app/src
-      - ./shared:/app/shared
     environment:
       <<: *common-node-variables
       POSTGRES_USER: postgres
-			POSTGRES_HOST: postgres.db.riptest
-			POSTGRES_DB: riptest
-			POSTGRES_PASSWORD: postgres
-			POSTGRES_PORT: '5432'
+      POSTGRES_HOST: postgres.db.riptest
+      POSTGRES_DB: riptest
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: '5432'
     # ports:
     #   - 8082:80
   # -------------------------------------------------------------------------
@@ -62,7 +60,6 @@ services:
       dockerfile: development.Dockerfile
     volumes:
       - ./gateways/user/src:/usr/src/app/src
-      - ./shared:/app/shared
     environment:
       <<: *common-node-variables
     ports:
